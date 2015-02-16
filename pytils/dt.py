@@ -10,6 +10,12 @@ from pytils import numeral
 from pytils.utils import check_positive
 from pytils.third import six
 
+try:
+    from django.utils import timezone
+    now_tz = timezone.now
+except ImportError:
+    now_tz = datetime.datetime.now
+
 DAY_ALTERNATIVES = {
     1: (u"вчера", u"завтра"),
     2: (u"позавчера", u"послезавтра")
@@ -85,7 +91,7 @@ def distance_of_time_in_words(from_time, accuracy=1, to_time=None):
 
     if to_time is None:
         current = True
-        to_time = datetime.datetime.now()
+        to_time = now_tz()
 
     check_positive(accuracy, strict=True)
 
